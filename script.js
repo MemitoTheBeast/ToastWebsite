@@ -4,8 +4,12 @@ const dragCtx = dragCanvas.getContext("2d");
 const jumpCanvas = document.getElementById("jumpToastCanvas");
 const jumpCtx = jumpCanvas.getContext("2d");
 
-dragCanvas.width = jumpCanvas.width = 150;
-dragCanvas.height = jumpCanvas.height = 200;
+// Set canvas sizes dynamically
+function resizeCanvas() {
+    dragCanvas.width = jumpCanvas.width = 150;
+    dragCanvas.height = jumpCanvas.height = 200;
+}
+resizeCanvas();
 
 // --- Drag Toast Game ---
 const dragToast = { x: 50, y: 75, width: 50, height: 50, color: "#d2691e", dragging: false };
