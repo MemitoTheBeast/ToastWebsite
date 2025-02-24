@@ -1,42 +1,46 @@
-const toast = document.getElementById('toast');
-const gameArea = document.getElementById('gameArea');
+const canvas = document.getElementById("toastCanvas");
+const ctx = canvas.getContext("2d");
 
-let isJumping = false;
-let toastPosition = { x: 270, y: 300 }; // Starting position of the toast
-let velocity = 0;
-let gravity = 0.5;
-let jumpHeight = -12;
+canvas.width = 300;
+canvas.height = 200;
 
-function updateToastPosition() {
-    if (toastPosition.y < gameArea.clientHeight - toast.clientHeight) {
-        // Apply gravity
-        velocity += gravity;
-        toastPosition.y += velocity;
-    } else {
-        // Prevent the toast from going below the ground (game area bottom)
-        toastPosition.y = gameArea.clientHeight - toast.clientHeight;
-    }
+const toast = {
+    x: 130,
+    y: 150,
+    width: 40,
+    height: 40,
+    color: "#d2691e",
+    velocityY: 0,
+    gravity: 0.5,
+    jumpPower: -8
+};
 
-    toast.style.left = toastPosition.x + 'px';
-    toast.style.top = toastPosition.y + 'px';
+function drawToast() {
+    ctx.fillStyle = toast.color;
+    ctx.fillRect(toast.x, toast.y, toast.width, toast.height);
 }
 
-// Make the toast jump
-function jump() {
-    if (!isJumping) {
-        isJumping = true;
-        velocity = jumpHeight;
+function updateToast() {
+    toast.velocityY += toast.gravity;
+    toast.y += toast.velocityY;
+
+    if (toast.y > 150) {
+        toast.y = 150;
+        toast.velocityY = 0;
     }
 }
 
-// Add event listener for touch or click to trigger jump
-document.addEventListener('touchstart', () => jump());
-document.addEventListener('mousedown', () => jump());
-
-// Game loop to keep updating the toast's position
 function gameLoop() {
-    updateToastPosition();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawToast();
+    updateToast();
     requestAnimationFrame(gameLoop);
 }
+
+canvas.addEventListener("click", () => {
+    if (toast.y === 150) {
+        toast.velocityY = toast.jumpPower;
+    }
+});
 
 gameLoop();
