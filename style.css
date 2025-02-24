@@ -33,4 +33,5 @@ canvas {
     display: block;
     margin: auto;
     border-radius: 10px;
+    touch-action: none;
 }
