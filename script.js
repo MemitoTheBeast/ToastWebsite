@@ -1,19 +1,21 @@
 const dragCanvas = document.getElementById("dragToastCanvas");
 const dragCtx = dragCanvas.getContext("2d");
 
-const jumpCanvas = document.getElementById("jumpToastCanvas");
-const jumpCtx = jumpCanvas.getContext("2d");
+// Set canvas size
+dragCanvas.width = 200;
+dragCanvas.height = 200;
 
-// Set canvas sizes dynamically
-function resizeCanvas() {
-    dragCanvas.width = jumpCanvas.width = 150;
-    dragCanvas.height = jumpCanvas.height = 200;
-}
-resizeCanvas();
+// Toast object
+const dragToast = { 
+    x: 75, 
+    y: 75, 
+    width: 50, 
+    height: 50, 
+    color: "#d2691e", 
+    dragging: false 
+};
 
-// --- Drag Toast Game ---
-const dragToast = { x: 50, y: 75, width: 50, height: 50, color: "#d2691e", dragging: false };
-
+// Draw the toast
 function drawDragToast() {
     dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
     dragCtx.fillStyle = dragToast.color;
@@ -21,6 +23,7 @@ function drawDragToast() {
     requestAnimationFrame(drawDragToast);
 }
 
+// Touch event listeners
 dragCanvas.addEventListener("touchstart", (event) => {
     let touch = event.touches[0];
     let rect = dragCanvas.getBoundingClientRect();
@@ -44,31 +47,5 @@ dragCanvas.addEventListener("touchmove", (event) => {
 
 dragCanvas.addEventListener("touchend", () => { dragToast.dragging = false; });
 
+// Start game loop
 drawDragToast();
-
-// --- Jump Toast Game ---
-const jumpToast = { x: 50, y: 150, width: 50, height: 50, color: "#d2691e", velocityY: 0, gravity: 0.5, jumpPower: -8 };
-
-function drawJumpToast() {
-    jumpCtx.clearRect(0, 0, jumpCanvas.width, jumpCanvas.height);
-    jumpCtx.fillStyle = jumpToast.color;
-    jumpCtx.fillRect(jumpToast.x, jumpToast.y, jumpToast.width, jumpToast.height);
-
-    jumpToast.velocityY += jumpToast.gravity;
-    jumpToast.y += jumpToast.velocityY;
-
-    if (jumpToast.y > 150) {
-        jumpToast.y = 150;
-        jumpToast.velocityY = 0;
-    }
-
-    requestAnimationFrame(drawJumpToast);
-}
-
-jumpCanvas.addEventListener("click", () => {
-    if (jumpToast.y === 150) {
-        jumpToast.velocityY = jumpToast.jumpPower;
-    }
-});
-
-drawJumpToast();
