@@ -1,46 +1,15 @@
-const canvas = document.getElementById("toastCanvas");
-const ctx = canvas.getContext("2d");
+const toastFacts = [
+    "Toast was likely discovered by accident when early civilizations cooked bread over an open flame.",
+    "The word 'toast' comes from the Latin 'tostum,' meaning 'to burn or scorch.'",
+    "The first electric toaster, called the 'Eclipse,' was invented in 1893.",
+    "The most expensive piece of toast ever sold was $28,000, featuring an image of the Virgin Mary.",
+    "Astronauts use tortillas instead of toast in space to avoid floating crumbs.",
+    "The phrase 'raising a toast' comes from medieval times when spiced toast was added to wine for flavor."
+];
 
-canvas.width = 300;
-canvas.height = 200;
-
-const toast = {
-    x: 130,
-    y: 150,
-    width: 40,
-    height: 40,
-    color: "#d2691e",
-    velocityY: 0,
-    gravity: 0.5,
-    jumpPower: -8
-};
-
-function drawToast() {
-    ctx.fillStyle = toast.color;
-    ctx.fillRect(toast.x, toast.y, toast.width, toast.height);
+function addToastFact() {
+    const factContainer = document.getElementById("fact-container");
+    const newFact = document.createElement("p");
+    newFact.textContent = toastFacts[Math.floor(Math.random() * toastFacts.length)];
+    factContainer.appendChild(newFact);
 }
-
-function updateToast() {
-    toast.velocityY += toast.gravity;
-    toast.y += toast.velocityY;
-
-    if (toast.y > 150) {
-        toast.y = 150;
-        toast.velocityY = 0;
-    }
-}
-
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawToast();
-    updateToast();
-    requestAnimationFrame(gameLoop);
-}
-
-canvas.addEventListener("click", () => {
-    if (toast.y === 150) {
-        toast.velocityY = toast.jumpPower;
-    }
-});
-
-gameLoop();
